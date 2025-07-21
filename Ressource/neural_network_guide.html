@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Visuel des Réseaux de Neurones</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .toc li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .neuron-diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .formula {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .activation-visual {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .activation-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin: 10px;
+            min-width: 200px;
+        }
+
+        .network-architecture {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .layer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 30px;
+        }
+
+        .neuron {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .connection {
+            width: 50px;
+            height: 2px;
+            background: #ccc;
+            margin: 0 10px;
+        }
+
+        .xor-table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .xor-table th, .xor-table td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .xor-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .key-points {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .key-points h3 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .key-points ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .key-points li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .gradient-descent {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #0abde3);
+            height: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .gradient-descent::after {
+            content: "Descente de gradient";
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .math-box {
+            background: #f1f3f4;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .example-box {
+            background: #e8f4f8;
+            border: 2px solid #17a2b8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .example-box h4 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+        }
+
+        .print-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .print-button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+            }
+            .print-button {
+                display: none;
+            }
+        }
+
+        .architecture-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .architecture-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+
+        .loss-function {
+            background: #fff5f5;
+            border: 2px solid #e53e3e;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .loss-function h4 {
+            color: #e53e3e;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📘 Guide Visuel des Réseaux de Neurones</h1>
+            <p>Une introduction complète et illustrée aux réseaux de neurones artificiels</p>
+        </div>
+
+        <div class="toc">
+            <h2>📋 Table des matières</h2>
+            <ul>
+                <li>1. Introduction aux réseaux de neurones</li>
+                <li>2. Anatomie d'un neurone artificiel</li>
+                <li>3. Fonctions d'activation essentielles</li>
+                <li>4. Architecture des réseaux</li>
+                <li>5. Types de réseaux de neurones</li>
+                <li>6. Processus d'apprentissage</li>
+                <li>7. Fonctions de perte</li>
+                <li>8. Exemple pratique : XOR</li>
+                <li>9. Optimisation et hyperparamètres</li>
+                <li>10. Applications pratiques</li>
+                <li>11. Bonnes pratiques</li>
+                <li>12. Résumé et points clés</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🧠 1. Introduction aux réseaux de neurones</h2>
+            <p>Un réseau de neurones artificiel est un modèle computationnel inspiré du fonctionnement du cerveau humain. Il est composé d'unités de traitement simples appelées <strong>neurones artificiels</strong>, organisées en couches interconnectées.</p>
+            
+            <div class="neuron-diagram">
+                <h3>Schéma d'un neurone biologique vs artificiel</h3>
+                <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                    <div style="text-align: center;">
+                        <h4>Neurone biologique</h4>
+                        <div style="font-size: 2em; margin: 20px 0;">🧠</div>
+                        <p>Dendrites → Corps cellulaire → Axone</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <h4>Neurone artificiel</h4>
+                        <div style="font-size: 2em; margin: 20px 0;">⚡</div>
+                        <p>Entrées → Fonction → Sortie</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Analogie :</strong> Comme le cerveau traite l'information à travers des réseaux de neurones interconnectés, les réseaux de neurones artificiels traitent les données à travers des couches de calculs mathématiques.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ 2. Anatomie d'un neurone artificiel</h2>
+            
+            <div class="neuron-diagram">
+                <h3>Structure détaillée d'un neurone</h3>
+                <div style="font-family: monospace; font-size: 1.1em; margin: 20px 0;">
+                    <pre>
+    x₁ ────┐
+           │    w₁
+    x₂ ────┼────→ [Σ] ──→ [f] ──→ y
+           │    w₂      +b
+    x₃ ────┘
+           w₃
+                    </pre>
+                </div>
+            </div>
+
+            <div class="formula">
+z = w₁x₁ + w₂x₂ + w₃x₃ + b
+y = f(z)
+            </div>
+
+            <h3>Composants principaux :</h3>
+            <div class="architecture-types">
+                <div class="architecture-card">
+                    <h4>🔢 Entrées (x)</h4>
+                    <p>Les données d'entrée ou les sorties des neurones précédents. Chaque entrée représente une caractéristique (feature) des données.</p>
+                </div>
+                <div class="architecture-card">
+                    <h4>⚖️ Poids (w)</h4>
+                    <p>Paramètres appris qui déterminent l'importance de chaque entrée. Plus le poids est élevé, plus l'influence est grande.</p>
+                </div>
+                <div class="architecture-card">
+                    <h4>➕ Biais (b)</h4>
+                    <p>Paramètre additionnel qui permet de décaler la fonction d'activation. Il agit comme un seuil d'activation.</p>
+                </div>
+                <div class="architecture-card">
+                    <h4>🎯 Fonction d'activation (f)</h4>
+                    <p>Fonction non-linéaire qui transforme la somme pondérée en sortie du neurone.</p>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h4>💡 Exemple concret</h4>
+                <p>Prédiction du prix d'une maison :</p>
+                <ul>
+                    <li>x₁ = surface (m²)</li>
+                    <li>x₂ = nombre de chambres</li>
+                    <li>x₃ = âge de la maison</li>
+                    <li>w₁ = 1000 (€/m²)</li>
+                    <li>w₂ = 5000 (€/chambre)</li>
+                    <li>w₃ = -500 (€/année)</li>
+                    <li>b = 50000 (€, prix de base)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 3. Fonctions d'activation essentielles</h2>
+            <p>Les fonctions d'activation introduisent la non-linéarité dans le réseau, permettant d'apprendre des relations complexes.</p>
+
+            <div class="activation-visual">
+                <div class="activation-box">
+                    <h4>ReLU (Rectified Linear Unit)</h4>
+                    <div class="formula">f(x) = max(0, x)</div>
+                    <p><strong>Avantages :</strong> Simple, rapide, évite le gradient vanishing</p>
+                    <p><strong>Inconvénients :</strong> Neurones "morts" pour x &lt; 0</p>
+                </div>
+                
+                <div class="activation-box">
+                    <h4>Sigmoïde</h4>
+                    <div class="formula">f(x) = 1/(1 + e^(-x))</div>
+                    <p><strong>Avantages :</strong> Sortie entre 0 et 1, interprétable comme probabilité</p>
+                    <p><strong>Inconvénients :</strong> Gradient vanishing, saturation</p>
+                </div>
+                
+                <div class="activation-box">
+                    <h4>Tanh</h4>
+                    <div class="formula">f(x) = (e^x - e^(-x))/(e^x + e^(-x))</div>
+                    <p><strong>Avantages :</strong> Sortie entre -1 et 1, centrée sur 0</p>
+                    <p><strong>Inconvénients :</strong> Gradient vanishing aux extrêmes</p>
+                </div>
+            </div>
+
+            <div class="activation-visual">
+                <div class="activation-box">
+                    <h4>Leaky ReLU</h4>
+                    <div class="formula">f(x) = max(0.01x, x)</div>
+                    <p><strong>Avantages :</strong> Évite les neurones morts</p>
+                    <p><strong>Usage :</strong> Alternative à ReLU</p>
+                </div>
+                
+                <div class="activation-box">
+                    <h4>Softmax</h4>
+                    <div class="formula">f(x_i) = e^(x_i) / Σe^(x_j)</div>
+                    <p><strong>Avantages :</strong> Parfait pour classification multi-classes</p>
+                    <p><strong>Usage :</strong> Couche de sortie</p>
+                </div>
+                
+                <div class="activation-box">
+                    <h4>Swish</h4>
+                    <div class="formula">f(x) = x * sigmoid(x)</div>
+                    <p><strong>Avantages :</strong> Auto-gating, performance supérieure</p>
+                    <p><strong>Usage :</strong> Réseaux profonds modernes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ 4. Architecture des réseaux</h2>
+            
+            <div class="network-architecture">
+                <div class="layer">
+                    <h4>Couche d'entrée</h4>
+                    <div class="neuron">x₁</div>
+                    <div class="neuron">x₂</div>
+                    <div class="neuron">x₃</div>
+                    <div class="neuron">x₄</div>
+                </div>
+                
+                <div class="connection"></div>
+                
+                <div class="layer">
+                    <h4>Couche cachée 1</h4>
+                    <div class="neuron">h₁</div>
+                    <div class="neuron">h₂</div>
+                    <div class="neuron">h₃</div>
+                    <div class="neuron">h₄</div>
+                    <div class="neuron">h₅</div>
+                </div>
+                
+                <div class="connection"></div>
+                
+                <div class="layer">
+                    <h4>Couche cachée 2</h4>
+                    <div class="neuron">h₁</div>
+                    <div class="neuron">h₂</div>
+                    <div class="neuron">h₃</div>
+                </div>
+                
+                <div class="connection"></div>
+                
+                <div class="layer">
+                    <h4>Couche de sortie</h4>
+                    <div class="neuron">y₁</div>
+                    <div class="neuron">y₂</div>
+                </div>
+            </div>
+
+            <div class="math-box">
+                <h4>Représentation matricielle</h4>
+                <div class="formula">
+H₁ = f₁(W₁ × X + b₁)
+H₂ = f₂(W₂ × H₁ + b₂)
+Y = f₃(W₃ × H₂ + b₃)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 5. Types de réseaux de neurones</h2>
+            
+            <div class="architecture-types">
+                <div class="architecture-card">
+                    <h4>🔗 Perceptron Multi-Couches (MLP)</h4>
+                    <p>Réseau entièrement connecté avec propagation avant. Idéal pour les problèmes de classification et régression sur données tabulaires.</p>
+                    <p><strong>Usage :</strong> Données structurées, problèmes simples</p>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>🖼️ Réseaux de Neurones Convolutionnels (CNN)</h4>
+                    <p>Spécialisés dans le traitement d'images avec des couches de convolution et pooling.</p>
+                    <p><strong>Usage :</strong> Vision par ordinateur, traitement d'images</p>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>🔄 Réseaux de Neurones Récurrents (RNN)</h4>
+                    <p>Possèdent une mémoire pour traiter des séquences de données.</p>
+                    <p><strong>Usage :</strong> Traitement du langage, séries temporelles</p>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>🧠 LSTM/GRU</h4>
+                    <p>Versions améliorées des RNN qui gèrent mieux les dépendances à long terme.</p>
+                    <p><strong>Usage :</strong> Traduction, génération de texte</p>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>🎯 Transformers</h4>
+                    <p>Architecture basée sur les mécanismes d'attention, révolutionnant le NLP.</p>
+                    <p><strong>Usage :</strong> GPT, BERT, traduction automatique</p>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>🎨 Autoencodeurs</h4>
+                    <p>Réseaux qui apprennent à compresser et reconstruire les données.</p>
+                    <p><strong>Usage :</strong> Réduction de dimensionnalité, détection d'anomalies</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 6. Processus d'apprentissage</h2>
+            
+            <div class="neuron-diagram">
+                <h3>Cycle d'apprentissage</h3>
+                <div style="display: flex; justify-content: space-around; margin: 30px 0;">
+                    <div style="text-align: center; max-width: 200px;">
+                        <div style="font-size: 2em; margin: 10px 0;">➡️</div>
+                        <h4>1. Propagation avant</h4>
+                        <p>Calcul des prédictions</p>
+                    </div>
+                    <div style="text-align: center; max-width: 200px;">
+                        <div style="font-size: 2em; margin: 10px 0;">📊</div>
+                        <h4>2. Calcul de la perte</h4>
+                        <p>Mesure de l'erreur</p>
+                    </div>
+                    <div style="text-align: center; max-width: 200px;">
+                        <div style="font-size: 2em; margin: 10px 0;">⬅️</div>
+                        <h4>3. Rétropropagation</h4>
+                        <p>Calcul des gradients</p>
+                    </div>
+                    <div style="text-align: center; max-width: 200px;">
+                        <div style="font-size: 2em; margin: 10px 0;">🔄</div>
+                        <h4>4. Mise à jour</h4>
+                        <p>Optimisation des poids</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Algorithme de rétropropagation</h3>
+            <div class="formula">
+# Propagation avant
+z^(l) = W^(l) × a^(l-1) + b^(l)
+a^(l) = f(z^(l))
+
+# Rétropropagation
+δ^(L) = ∇_a C ⊙ f'(z^(L))
+δ^(l) = ((W^(l+1))^T δ^(l+1)) ⊙ f'(z^(l))
+
+# Mise à jour des poids
+W^(l) = W^(l) - η × δ^(l) × (a^(l-1))^T
+b^(l) = b^(l) - η × δ^(l)
+            </div>
+
+            <div class="gradient-descent"></div>
+        </div>
+
+        <div class="section">
+            <h2>📉 7. Fonctions de perte</h2>
+            
+            <div class="loss-function">
+                <h4>Classification binaire - Entropie croisée</h4>
+                <div class="formula">L = -[y×log(ŷ) + (1-y)×log(1-ŷ)]</div>
+                <p>Utilisée quand la sortie est une probabilité entre 0 et 1.</p>
+            </div>
+            
+            <div class="loss-function">
+                <h4>Classification multi-classes - Entropie croisée catégorielle</h4>
+                <div class="formula">L = -Σ(y_i × log(ŷ_i))</div>
+                <p>Utilisée avec softmax pour les problèmes multi-classes.</p>
+            </div>
+            
+            <div class="loss-function">
+                <h4>Régression - Erreur quadratique moyenne (MSE)</h4>
+                <div class="formula">L = (1/n) × Σ(y_i - ŷ_i)²</div>
+                <p>Mesure la différence quadratique entre prédictions et valeurs réelles.</p>
+            </div>
+            
+            <div class="loss-function">
+                <h4>Régression robuste - Erreur absolue moyenne (MAE)</h4>
+                <div class="formula">L = (1/n) × Σ|y_i - ŷ_i|</div>
+                <p>Moins sensible aux valeurs aberrantes que MSE.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔀 8. Exemple pratique : Le problème XOR</h2>
+            <p>Le XOR est un problème classique qui démontre l'importance des couches cachées pour résoudre des problèmes non-linéaires.</p>
+            
+            <table class="xor-table">
+                <thead>
+                    <tr>
+                        <th>x₁</th>
+                        <th>x₂</th>
+                        <th>XOR (y)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <strong>Problème :</strong> Un perceptron simple (sans couche cachée) ne peut pas résoudre XOR car ce n'est pas linéairement séparable.
+            </div>
+
+            <div class="network-architecture">
+                <div class="layer">
+                    <h4>Entrée</h4>
+                    <div class="neuron">x₁</div>
+                    <div class="neuron">x₂</div>
+                </div>
+                
+                <div class="connection"></div>
+                
+                <div class="layer">
+                    <h4>Cachée</h4>
+                    <div class="neuron">h₁</div>
+                    <div class="neuron">h₂</div>
+                </div>
+                
+                <div class="connection"></div>
+                
+                <div class="layer">
+                    <h4>Sortie</h4>
+                    <div class="neuron">y</div>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h4>💡 Solution avec couche cachée</h4>
+                <p>La couche cachée permet de transformer l'espace d'entrée pour rendre le problème linéairement séparable :</p>
+                <ul>
+                    <li>h₁ apprend à détecter "x₁ ET x₂"</li>
+                    <li
